@@ -1,0 +1,6 @@
+.git
+out/
+*.pdf
+result
+examples/
+.github/

@@ -1,0 +1,19 @@
+# For editing configs and rebuilding: the repo is bind-mounted over /planner, so
+# changes to cfg/ and tpls/ take effect with no image rebuild, and the PDF lands
+# in the repo next to single.sh.
+#
+#   docker compose run --rm planner
+#   docker compose run --rm -e PLANNER_YEAR=2027 planner
+#
+# Override the entrypoint to run something else in the same environment:
+#
+#   docker compose run --rm --entrypoint ./build.sh planner 2027
+services:
+  planner:
+    build: .
+    image: latex-yearly-planner
+    # Keep generated files owned by you rather than root.
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+    working_dir: /planner
+    volumes:
+      - .:/planner
