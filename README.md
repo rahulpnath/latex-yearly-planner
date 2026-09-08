@@ -42,15 +42,15 @@ here pin both, so the only thing you need on your machine is Docker.
 checkout for you:
 
 ```bash
-docker build -t planner https://github.com/<you>/latex-yearly-planner.git
+docker build -t planner https://github.com/rahulpnath/latex-yearly-planner.git
 docker run --rm -v "$PWD:/out" planner
 ```
 
 The PDF lands in the current directory. Nothing is installed on the host and no
 copy of the repo is left behind.
 
-> The git URL must point at a repo that **contains these Docker files** — your
-> own fork, or a branch of it. Upstream does not have them.
+> The git URL must point at a repo that **contains these Docker files** — this
+> fork, or a branch of it. Upstream does not have them.
 
 Pick a year, a device, a layout — every knob is an environment variable:
 
@@ -140,6 +140,44 @@ Two deliberate differences from the rM2 config:
 
 The months-on-side layout still reserves a wide left margin — its month and
 quarter rail is a rotated `marginnote` and has to live somewhere.
+
+## Which planner to build
+
+Two overlays, `lined` and `timeblock`, are independent of each other, so there
+are four builds. Chain them after the preset, in this order, and set `NAME` to
+whatever you want the file called.
+
+| Build | Chain onto the base four | 2026 |
+| --- | --- | --- |
+| Dot grid, schedule on the day page | *nothing* | 975 |
+| Ruled lines, schedule on the day page | `,cfg/boox_go_103.lined.yaml` | 975 |
+| Dot grid, time blocking | `,cfg/boox_go_103.timeblock.yaml` | 1340 |
+| Ruled lines, time blocking | `,cfg/boox_go_103.lined.yaml,cfg/boox_go_103.timeblock.yaml` | 1340 |
+
+"the base four" being the chain every build starts with:
+
+```
+cfg/base.yaml,cfg/boox_go_103.base.yaml,cfg/template_breadcrumb.yaml,cfg/boox_go_103.breadcrumb.custom.yaml
+```
+
+So the fullest build is:
+
+```bash
+docker run --rm -v "$PWD:/out" \
+  -e PLANNER_YEAR=2026 \
+  -e CFG="cfg/base.yaml,cfg/boox_go_103.base.yaml,cfg/template_breadcrumb.yaml,cfg/boox_go_103.breadcrumb.custom.yaml,cfg/boox_go_103.lined.yaml,cfg/boox_go_103.timeblock.yaml" \
+  -e NAME="boox_go_103.timeblock.lined.2026" \
+  planner
+```
+
+Order matters: config files are applied left to right, and each one only
+overrides the keys it mentions. `timeblock` must come last, because it
+redefines the page list.
+
+There are also `cfg/boox_go_103.mos.default.yaml` and
+`cfg/boox_go_103.breadcrumb.default.yaml` — the Boox geometry with upstream's
+stock page designs, months-on-side or breadcrumb, rather than this preset.
+They take the panel fix without any of the layout opinions below.
 
 ## The `boox_go_103.breadcrumb.custom` preset
 
