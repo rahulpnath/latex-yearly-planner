@@ -146,13 +146,101 @@ func (w *Week) weekNumber() int {
 	return wn
 }
 
-func (w *Week) Breadcrumb() string {
-	return header.Items{
+// Breadcrumb renders "2026 | Q1 | January | Week 2", and with a leaf -- the
+// week's notes page passes prefix "More" and leaf "Notes" -- appends it as a
+// further crumb carrying the page's hypertarget, as the daily pages do.
+func (w *Week) Breadcrumb(prefix, leaf string) string {
+	weekItem := header.NewTextItem("Week " + strconv.Itoa(w.weekNumber())).RefText(w.ref())
+
+	items := header.Items{
 		header.NewIntItem(w.Year.Number),
 		w.QuartersBreadcrumb(),
 		w.MonthsBreadcrumb(),
-		header.NewTextItem("Week " + strconv.Itoa(w.weekNumber())).RefText(w.ref()).Ref(true),
-	}.Table(true)
+	}
+
+	if len(leaf) > 0 {
+		items = append(items, weekItem, header.NewTextItem(leaf).RefText(prefix+w.ref()).Ref(true))
+	} else {
+		items = append(items, weekItem.Ref(true))
+	}
+
+	return items.Table(true)
+}
+
+func (w *Week) LinkLeaf(prefix, leaf string) string {
+	return hyper.Link(prefix+w.ref(), leaf)
+}
+
+// WeekRow is one block of writing lines on the weekly page: a label at the top
+// left, and Lines rules under it.
+type WeekRow struct {
+	Label string
+	Lines int
+}
+
+// Rows splits the week into the blocks the weekly page draws down its left
+// column. With combine set, and only for a full seven-day week, the last two
+// days -- Saturday and Sunday on a Monday-start week -- share one block, which
+// buys every other day another line or two.
+func (w *Week) Rows(combine bool, lines int) []WeekRow {
+	days := make([]Day, 0, 7)
+
+	for _, day := range w.Days {
+		if day.Time.IsZero() {
+			continue
+		}
+
+		days = append(days, day)
+	}
+
+	rows := make([]WeekRow, 0, len(days))
+
+	if combine && len(days) == 7 {
+		saturday, sunday := days[5], days[6]
+
+		for _, day := range days[:5] {
+			rows = append(rows, WeekRow{Label: day.ShortLink(), Lines: lines})
+		}
+
+		return append(rows, WeekRow{
+			Label: saturday.ShortLink() + `\hspace{1.5mm}/\hspace{1.5mm}` + sunday.ShortLink(),
+			Lines: lines,
+		})
+	}
+
+	for _, day := range days {
+		rows = append(rows, WeekRow{Label: day.ShortLink(), Lines: lines})
+	}
+
+	return rows
+}
+
+// RangeLabel is the heading of that left column: "5--11 January", or
+// "29 Dec--4 Jan" when the week straddles two months.
+func (w *Week) RangeLabel() string {
+	var first, last Day
+
+	for _, day := range w.Days {
+		if day.Time.IsZero() {
+			continue
+		}
+
+		if first.Time.IsZero() {
+			first = day
+		}
+
+		last = day
+	}
+
+	if first.Time.IsZero() {
+		return ""
+	}
+
+	if first.Time.Month() == last.Time.Month() {
+		return first.Time.Format("2") + "--" + last.Time.Format("2 January")
+	}
+
+	return first.Time.Format("2 Jan") + "--" + last.Time.Format("2 Jan")
 }
 
 func (w *Week) monthOverlap() bool {
@@ -183,17 +271,17 @@ func (w *Week) rightMonth() time.Month {
 	return -1
 }
 
-func (w *Week) PrevNext() header.Items {
+func (w *Week) PrevNext(prefix string) header.Items {
 	items := header.Items{}
 
 	if w.PrevExists() {
-		wn := w.Prev().weekNumber()
-		items = append(items, header.NewTextItem("Week "+strconv.Itoa(wn)))
+		prev := w.Prev()
+		items = append(items, header.NewTextItem(prev.Name()).RefText(prefix+prev.ref()))
 	}
 
 	if w.NextExists() {
-		wn := w.Next().weekNumber()
-		items = append(items, header.NewTextItem("Week "+strconv.Itoa(wn)))
+		next := w.Next()
+		items = append(items, header.NewTextItem(next.Name()).RefText(prefix+next.ref()))
 	}
 
 	return items

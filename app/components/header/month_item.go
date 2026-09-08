@@ -7,14 +7,15 @@ import (
 )
 
 type MonthItem struct {
-	Val     time.Month
-	ref     bool
-	shorten bool
+	Val       time.Month
+	ref       bool
+	shorten   bool
+	refPrefix string
 }
 
 func (m MonthItem) Display() string {
-	ref := m.Val.String()
-	text := ref
+	ref := m.refPrefix + m.Val.String()
+	text := m.Val.String()
 
 	if m.shorten {
 		text = text[:3]
@@ -29,6 +30,14 @@ func (m MonthItem) Display() string {
 
 func (m MonthItem) Ref() MonthItem {
 	m.ref = true
+
+	return m
+}
+
+// RefPrefix points the link at a leaf page of the month -- "More" for the
+// month's notes page -- rather than at the month page itself.
+func (m MonthItem) RefPrefix(prefix string) MonthItem {
+	m.refPrefix = prefix
 
 	return m
 }

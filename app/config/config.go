@@ -21,6 +21,10 @@ type Config struct {
 	AMPMTime            bool
 	AddLastHalfHour     bool
 
+	// CombineWeekend gives Saturday and Sunday one shared block of writing
+	// lines on the weekly page instead of one each.
+	CombineWeekend bool
+
 	Pages Pages
 
 	Layout Layout
@@ -75,6 +79,12 @@ type Numbers struct {
 	WeeklyLines         int
 	DailyTodos          int
 	DailyNotes          int
+	MonthlyNotes        int
+	MonthlyTodos        int
+	QuarterlyTodos      int
+	WeeklyTodos         int
+	WeeklyNotes         int
+	WeeklyDayLines      int
 	DailyPersonal       int
 	DailyBottomHour     int
 	DailyTopHour        int

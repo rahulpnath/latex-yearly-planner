@@ -108,23 +108,45 @@ func (m *Month) EndTable(typ interface{}) string {
 	return `\end{tabular}`
 }
 
-func (m *Month) Breadcrumb() string {
-	return header.Items{
-		header.NewIntItem(m.Year.Number),
-		header.NewTextItem("Q" + strconv.Itoa(m.Quarter.Number)),
-		header.NewMonthItem(m.Month).Ref(),
-	}.Table(true)
+func (m *Month) ref() string {
+	return m.Month.String()
 }
 
-func (m *Month) PrevNext() header.Items {
+// Breadcrumb renders "2026 | Q1 | January", and with a leaf -- the month's
+// notes page passes prefix "More" and leaf "Notes" -- appends it as a fourth
+// crumb which carries the page's hypertarget, exactly as the daily pages do.
+func (m *Month) Breadcrumb(prefix, leaf string) string {
+	items := header.Items{
+		header.NewIntItem(m.Year.Number),
+		header.NewTextItem("Q" + strconv.Itoa(m.Quarter.Number)),
+	}
+
+	if len(leaf) > 0 {
+		items = append(
+			items,
+			header.NewMonthItem(m.Month),
+			header.NewTextItem(leaf).RefText(prefix+m.ref()).Ref(true),
+		)
+	} else {
+		items = append(items, header.NewMonthItem(m.Month).Ref())
+	}
+
+	return items.Table(true)
+}
+
+func (m *Month) LinkLeaf(prefix, leaf string) string {
+	return hyper.Link(prefix+m.ref(), leaf)
+}
+
+func (m *Month) PrevNext(prefix string) header.Items {
 	items := header.Items{}
 
 	if m.Month > time.January {
-		items = append(items, header.NewMonthItem(m.Month-1))
+		items = append(items, header.NewMonthItem(m.Month-1).RefPrefix(prefix))
 	}
 
 	if m.Month < time.December {
-		items = append(items, header.NewMonthItem(m.Month+1))
+		items = append(items, header.NewMonthItem(m.Month+1).RefPrefix(prefix))
 	}
 
 	return items

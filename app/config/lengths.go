@@ -5,6 +5,8 @@ type Lengths struct {
 	LineThicknessDefault    string
 	LineThicknessThick      string
 	LineHeightButLine       string
+	DailyTodoLineHeight     string
+	DotGridPitch            string
 	TwoColSep               string
 	TriColSep               string
 	FiveColSep              string

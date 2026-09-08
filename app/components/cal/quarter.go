@@ -43,13 +43,49 @@ func NewQuarter(wd time.Weekday, year *Year, qrtr int) *Quarter {
 	return out
 }
 
-func (q *Quarter) Breadcrumb() string {
-	return header.Items{header.NewIntItem(q.Year.Number), header.NewItemsGroup(
-		header.NewTextItem("Q1").Bold(q.Number == 1).Ref(q.Number == 1),
-		header.NewTextItem("Q2").Bold(q.Number == 2).Ref(q.Number == 2),
-		header.NewTextItem("Q3").Bold(q.Number == 3).Ref(q.Number == 3),
-		header.NewTextItem("Q4").Bold(q.Number == 4).Ref(q.Number == 4),
-	)}.Table(true)
+// Breadcrumb renders "2026 | Q1 Q2 Q3 Q4" with the current quarter in bold.
+// With a leaf -- the quarter's notes page passes prefix "More" and leaf
+// "Notes" -- the target moves onto the leaf and the current quarter becomes a
+// link back to the quarter page, as it does on the daily notes pages.
+func (q *Quarter) Breadcrumb(prefix, leaf string) string {
+	here := len(leaf) == 0
+
+	items := header.Items{header.NewIntItem(q.Year.Number), header.NewItemsGroup(
+		header.NewTextItem("Q1").Bold(q.Number == 1).Ref(here && q.Number == 1),
+		header.NewTextItem("Q2").Bold(q.Number == 2).Ref(here && q.Number == 2),
+		header.NewTextItem("Q3").Bold(q.Number == 3).Ref(here && q.Number == 3),
+		header.NewTextItem("Q4").Bold(q.Number == 4).Ref(here && q.Number == 4),
+	)}
+
+	if !here {
+		items = append(items, header.NewTextItem(leaf).RefText(prefix+q.ref()).Ref(true))
+	}
+
+	return items.Table(true)
+}
+
+func (q *Quarter) ref() string {
+	return q.Name()
+}
+
+func (q *Quarter) LinkLeaf(prefix, leaf string) string {
+	return hyper.Link(prefix+q.ref(), leaf)
+}
+
+func (q *Quarter) PrevNext(prefix string) header.Items {
+	items := header.Items{}
+
+	if q.Number > 1 {
+		name := "Q" + strconv.Itoa(q.Number-1)
+		items = append(items, header.NewTextItem(name).RefText(prefix+name))
+	}
+
+	if q.Number < 4 {
+		name := "Q" + strconv.Itoa(q.Number+1)
+		items = append(items, header.NewTextItem(name).RefText(prefix+name))
+	}
+
+	return items
 }
 
 func (q *Quarter) Name() string {
