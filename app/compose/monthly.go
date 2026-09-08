@@ -9,10 +9,6 @@ import (
 var Monthly = MonthlyStuff("", "")
 var MonthlyNotes = MonthlyStuff("More", "Notes")
 
-// monthlySixthWeekRows is what a sixth calendar row costs the block of lines
-// underneath it, in line-pitch units: monthlycellheight (55pt) over a 5.5mm
-// pitch, rounded up. Months that span six weeks get that many fewer lines so
-// the page still ends above the bottom margin instead of reflowing.
 const monthlySixthWeekRows = 4
 
 func MonthlyStuff(prefix, leaf string) func(cfg config.Config, tpls []string) (page.Modules, error) {

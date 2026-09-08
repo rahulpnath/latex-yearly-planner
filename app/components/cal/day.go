@@ -84,8 +84,6 @@ func (d Day) Breadcrumb(prefix string, leaf string, shorten bool) string {
 	return items.Table(true)
 }
 
-// ShortLink is the "Mon 5" label the weekly page puts at the head of a day's
-// block of writing lines. It links to that day's own page.
 func (d Day) ShortLink() string {
 	return hyper.Link(d.ref(), d.Time.Format("Mon 2"))
 }

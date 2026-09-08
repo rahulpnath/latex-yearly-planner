@@ -43,10 +43,6 @@ func NewQuarter(wd time.Weekday, year *Year, qrtr int) *Quarter {
 	return out
 }
 
-// Breadcrumb renders "2026 | Q1 Q2 Q3 Q4" with the current quarter in bold.
-// With a leaf -- the quarter's notes page passes prefix "More" and leaf
-// "Notes" -- the target moves onto the leaf and the current quarter becomes a
-// link back to the quarter page, as it does on the daily notes pages.
 func (q *Quarter) Breadcrumb(prefix, leaf string) string {
 	here := len(leaf) == 0
 

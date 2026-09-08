@@ -2,8 +2,6 @@ addlasthalfhour: false
 
 layout:
   paper:
-    # The months/quarters rail is a rotated marginnote, so this layout does need
-    # a wide margin on one side (marginparwidth 1cm + marginparsep 4.5mm).
     margin:
       left: 1.45cm
       right: .3cm
@@ -12,7 +10,6 @@ layout:
     dailybottomhour: 6
     dailytophour: 23
     dailynotes: 26
-    # Narrower text block than the breadcrumb layout, so one fewer dot column.
     dotwidthfull: 29
     dotwidthtwothirds: 19
 

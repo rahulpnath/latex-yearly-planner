@@ -1,26 +1,7 @@
-# Personal Boox Go 10.3 build.
-#
-# Chain it after cfg/base.yaml, cfg/boox_go_103.base.yaml and
-# cfg/template_breadcrumb.yaml -- it replaces the page list wholesale.
-#
-#   - 12-hour clock (4 AM ... 7 PM)
-#   - daily schedule runs 04:00-19:00 (16 rows)
-#   - week starts Monday, dot grid, no mini calendar (all inherited defaults)
-#   - no per-day "reflect" page
-#   - half-page "Top priorities" block, 5.5mm pitch like everything else
-#   - every period -- day, week, month, quarter -- opens on tasks and has its
-#     own "More notes" page one link away
-
 ampmtime: true
 
-# The schedule column draws two rules per hour, so 4 AM - 7 PM is 32 rules --
-# exactly the 16 todo lines plus 16 notes lines opposite. The trailing
-# half-hour tick would add a 33rd, leaving one line dangling below the notes
-# column and past the footer rule.
 addlasthalfhour: false
 
-# Saturday and Sunday share one block on the weekly page. Seven separate days
-# would only fit four lines each; five days plus a weekend fits five.
 combineweekend: true
 
 layout:
@@ -28,30 +9,13 @@ layout:
     dailybottomhour: 4
     dailytophour: 19
 
-    # "Top priorities" keeps roughly the top half of the right-hand column,
-    # but at the same 5.5mm pitch as every other line in the planner rather than
-    # a pitch of its own -- so it is the line count that buys the height, not
-    # extra spacing. The notes grid below takes what is left; the per-day
-    # "More" page is where the long-form writing goes.
     dailytodos: 16
     dailynotes: 16
 
-    # The weekly page is the daily page with weekdays where the hours are.
-    # The rail is weeklydaylines per day over six blocks (five weekdays and the
-    # weekend), and it is boxed to weeklytodos + weeklynotes so the two columns
-    # close on the same rule however the rail is cut. Keep the rail no taller
-    # than that total: 6 x 5 = 30 against 32 here. Without combineweekend it is
-    # seven blocks, so weeklydaylines has to come down to 4.
     weeklydaylines: 5
     weeklytodos: 16
     weeklynotes: 16
 
-    # Monthly and quarterly pages are checkboxes only -- the writing lines are
-    # on their notes pages. quarterlytodos is a full column, the same 32 units
-    # the daily and weekly pages use. monthlytodos is what is left under a
-    # five-week calendar; six-week months (August and November in 2026) get
-    # four fewer lines automatically, since the sixth calendar row costs about
-    # that much.
     monthlytodos: 13
     quarterlytodos: 32
 
@@ -74,8 +38,6 @@ pages:
         tpls:
           - boox_go_103_02_quarterly.tpl
 
-  # breadcrumb_07_daily_notes.tpl is nothing but a header and a full page of
-  # writing surface, so the month, quarter and week notes pages all reuse it.
   - name: quarterly_notes
     renderblocks:
       - funcname: quarterly_notes
@@ -106,8 +68,6 @@ pages:
         tpls:
           - breadcrumb_07_daily_notes.tpl
 
-  # Uses a local copy of the daily template with the "Reflect" link dropped,
-  # since the daily_reflect pages are not part of this build.
   - name: daily
     renderblocks:
       - funcname: daily

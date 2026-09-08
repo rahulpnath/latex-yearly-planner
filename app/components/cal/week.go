@@ -146,9 +146,6 @@ func (w *Week) weekNumber() int {
 	return wn
 }
 
-// Breadcrumb renders "2026 | Q1 | January | Week 2", and with a leaf -- the
-// week's notes page passes prefix "More" and leaf "Notes" -- appends it as a
-// further crumb carrying the page's hypertarget, as the daily pages do.
 func (w *Week) Breadcrumb(prefix, leaf string) string {
 	weekItem := header.NewTextItem("Week " + strconv.Itoa(w.weekNumber())).RefText(w.ref())
 
@@ -171,17 +168,11 @@ func (w *Week) LinkLeaf(prefix, leaf string) string {
 	return hyper.Link(prefix+w.ref(), leaf)
 }
 
-// WeekRow is one block of writing lines on the weekly page: a label at the top
-// left, and Lines rules under it.
 type WeekRow struct {
 	Label string
 	Lines int
 }
 
-// Rows splits the week into the blocks the weekly page draws down its left
-// column. With combine set, and only for a full seven-day week, the last two
-// days -- Saturday and Sunday on a Monday-start week -- share one block, which
-// buys every other day another line or two.
 func (w *Week) Rows(combine bool, lines int) []WeekRow {
 	days := make([]Day, 0, 7)
 
@@ -215,8 +206,6 @@ func (w *Week) Rows(combine bool, lines int) []WeekRow {
 	return rows
 }
 
-// RangeLabel is the heading of that left column: "5--11 January", or
-// "29 Dec--4 Jan" when the week straddles two months.
 func (w *Week) RangeLabel() string {
 	var first, last Day
 

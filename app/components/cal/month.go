@@ -112,9 +112,6 @@ func (m *Month) ref() string {
 	return m.Month.String()
 }
 
-// Breadcrumb renders "2026 | Q1 | January", and with a leaf -- the month's
-// notes page passes prefix "More" and leaf "Notes" -- appends it as a fourth
-// crumb which carries the page's hypertarget, exactly as the daily pages do.
 func (m *Month) Breadcrumb(prefix, leaf string) string {
 	items := header.Items{
 		header.NewIntItem(m.Year.Number),

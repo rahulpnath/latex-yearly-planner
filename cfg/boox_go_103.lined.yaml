@@ -1,16 +1,1 @@
-# Lined overlay. Chain it last, after cfg/boox_go_103.breadcrumb.custom.yaml:
-#
-#   CFG="cfg/base.yaml,cfg/boox_go_103.base.yaml,cfg/template_breadcrumb.yaml,\
-#        cfg/boox_go_103.breadcrumb.custom.yaml,cfg/boox_go_103.lined.yaml"
-#
-# `dotted` is a single global switch, so this one key turns every writing
-# surface from a 5mm dot grid into 5mm ruled lines: the daily page notes block,
-# the per-day "More" notes page, the notes section at the back, and the weekly,
-# monthly and quarterly pages. The weekly page swaps to a dedicated template
-# (_common_04_weekly_lined.tpl) rather than reusing the dotted one.
-#
-# Row counts carry over unchanged -- a line and a dot row are both 5mm -- so the
-# half-page "Top priorities" split on the daily page is unaffected. The
-# full-page notes sheets ignore the counts entirely and fill themselves with
-# \leaders.
 dotted: false

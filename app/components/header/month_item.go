@@ -34,8 +34,6 @@ func (m MonthItem) Ref() MonthItem {
 	return m
 }
 
-// RefPrefix points the link at a leaf page of the month -- "More" for the
-// month's notes page -- rather than at the month page itself.
 func (m MonthItem) RefPrefix(prefix string) MonthItem {
 	m.refPrefix = prefix
 

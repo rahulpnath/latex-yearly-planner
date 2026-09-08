@@ -21,13 +21,8 @@ type Config struct {
 	AMPMTime            bool
 	AddLastHalfHour     bool
 
-	// CombineWeekend gives Saturday and Sunday one shared block of writing
-	// lines on the weekly page instead of one each.
 	CombineWeekend bool
 
-	// TimeBlock swaps the daily page to a time-blocking layout: the schedule
-	// column moves off it onto a page of its own, reached by the TimeBlock
-	// link, leaving the day page as tasks and notes across the full width.
 	TimeBlock bool
 
 	Pages Pages

@@ -1,14 +1,3 @@
-# Onyx Boox Go 10.3
-#
-# 10.3" 4:3 E Ink panel, 1872x1404 px at 227 ppi, i.e. 157 x 209 mm of glass.
-# That is the same geometry as the reMarkable 2, so the vertical tuning here is
-# carried over from cfg/rm2.base.yaml.
-#
-# Two deliberate differences from the rM2:
-#   - Boox draws PDFs edge to edge with no permanent left-hand tool rail, so the
-#     page keeps even side margins instead of reserving 1.4cm on the left.
-#   - No fixed top-right chrome either, so the header links do not need padding
-#     away from that corner.
 cleartoprightcorner: false
 
 layout:
@@ -47,12 +36,6 @@ layout:
     tabcolsep: 3.5pt
     linethicknessdefault: .4pt
     linethicknessthick: .8pt
-    # One pitch for every writing surface: schedule rows, ruled lines, the
-    # notes index, the todo lines and the dot grid. 5.5mm rather than the
-    # upstream 5mm. It is the ceiling: a schedule hour costs two of these
-    # units, so 16 hours plus half-hour ticks stops fitting above ~5.75mm.
-    # dotgridpitch has to
-    # repeat the value as a literal -- multido cannot read a length register.
     lineheightbutline: \dimexpr5.5mm-.4pt
     dotgridpitch: 5.5mm
     twocolsep: 5pt

@@ -1,5 +1,3 @@
-{{/* Copy of schedule.tpl with the final rule drawn thick, so the schedule and
-     the notes column terminate on one bold line at the same height. */}}
 \myUnderline{Schedule\textcolor{white}{g}}\vskip-\myLenLineThicknessDefault
 {{- $hours := .Day.Hours .Cfg.Layout.Numbers.DailyBottomHour .Cfg.Layout.Numbers.DailyTopHour -}}
 {{- $last := dec (len $hours) -}}

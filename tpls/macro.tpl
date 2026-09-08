@@ -50,8 +50,6 @@
 \setlength{\myLenLineThicknessDefault}{ {{- $lengths.LineThicknessDefault -}} }
 \setlength{\myLenLineThicknessThick}{ {{- $lengths.LineThicknessThick -}} }
 \setlength{\myLenLineHeightButLine}{ {{- $lengths.LineHeightButLine -}} }
-% Pitch of the "Top priorities" lines. Defaults to the standard line height,
-% so configs that do not set it are unaffected.
 \setlength{\myLenDailyTodoLineHeight}{ {{- if $lengths.DailyTodoLineHeight -}} {{- $lengths.DailyTodoLineHeight -}} {{- else -}} \myLenLineHeightButLine {{- end -}} }
 \setlength{\myLenTwoColSep}{ {{- $lengths.TwoColSep -}} }
 \setlength{\myLenTwoCol}{\dimexpr.5\linewidth-.5\myLenTwoColSep}
@@ -83,17 +81,11 @@
 \newcommand{\myLineGrayVskipTop}{\vskip\myLenLineHeightButLine\myLineGray}
 
 \newcommand{\myTodo}{\myLineHeightButLine$\square$\myLinePlain}
-% Checkbox sits centred in its cell, as \myMinLineHeight places it.
 \newcommand{\myTodoLineGray}{\myMinLineHeight{\myLenDailyTodoLineHeight}$\square$\myLineGray}
-% The same row closing a column: thick rule instead of a thin one, so a column
-% of nothing but checkboxes still ends on the bold line the others do.
 \newcommand{\myTodoLineThick}{\myMinLineHeight{\myLenDailyTodoLineHeight}$\square$\myLineThick}
 
 \setlength{\myLenDotGridPitch}{ {{- if $lengths.DotGridPitch -}} {{- $lengths.DotGridPitch -}} {{- else -}} 5mm {{- end -}} }
-% Width of the hour strip down the left of the time-block page.
 \setlength{\myLenTimeBlockHourWidth}{ {{- if $lengths.TimeBlockHourWidth -}} {{- $lengths.TimeBlockHourWidth -}} {{- else -}} 12mm {{- end -}} }
-% Dot spacing. multido needs a literal dimension, so it is substituted rather
-% than read from a length register. Keep it in step with lineheightbutline.
 \newcommand{\myDotGrid}[2]{\leavevmode\multido{\dC=0mm+{{ if $lengths.DotGridPitch }}{{ $lengths.DotGridPitch }}{{ else }}5mm{{ end }}}{#1}{\multido{\dR=0mm+{{ if $lengths.DotGridPitch }}{{ $lengths.DotGridPitch }}{{ else }}5mm{{ end }}}{#2}{\put(\dR,\dC){\circle*{0.1}}}}}
 
 \newcommand{\myMash}[3][]{

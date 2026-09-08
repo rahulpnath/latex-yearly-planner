@@ -1,11 +1,3 @@
-{{/* Quarterly page: the three month calendars down the left, and what the
-     quarter is for as checkboxes on the right. As on the monthly page, the
-     writing lines moved to the quarter's own notes page.
-
-     The calendar stack is upstream's, including the trick that keeps its
-     braces balanced: the % after \arraystretch{0} eats the opening brace of
-     monthTabularV2.tpl, whose closing brace then closes the group opened here.
-     Nothing may come between them -- not even a template comment. */}}
 {{ template "breadcrumb_00_header.tpl" dict "Cfg" .Cfg "Body" .Body }}
 \begin{minipage}[t][\remainingHeight]{\myLenTriCol}
 {{- range $j, $month := .Body.Quarter.Months -}}

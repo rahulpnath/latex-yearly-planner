@@ -1,6 +1,3 @@
-{{/* Monthly page: the calendar, then a block of checkboxes for what the month
-     is actually for. The writing lines upstream puts here live on the month's
-     own notes page instead, one link away. */}}
 {{ template "breadcrumb_00_header.tpl" dict "Cfg" .Cfg "Body" .Body }}
 {{- template "monthTabularV2.tpl" dict "Month" .Body.Month "Large" true -}}
 \medskip
