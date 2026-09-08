@@ -308,6 +308,7 @@ file only overrides the keys it actually mentions. Edit
 | 24-hour clock | `ampmtime: false` |
 | Week starting Sunday | `weekstart: 0` |
 | Ruled lines instead of dots | chain `cfg/boox_go_103.lined.yaml` (see below) |
+| Time-blocking daily layout | chain `cfg/boox_go_103.timeblock.yaml` (see below) |
 | Mini month calendar under the schedule | `calafterschedule: true` |
 | More or fewer "Top priorities" lines | `layout.numbers.dailytodos` (8 upstream, 16 here) |
 | More or fewer note rows on the daily page | `layout.numbers.dailynotes` (27 upstream, 16 here) |
@@ -352,12 +353,65 @@ Nothing else changes shape. Upstream's monthly page does — one full-width dot
 grid when dotted, two narrower ruled columns when lined — but that is
 `tpls/_common_03_monthly.tpl`, which this preset no longer uses.
 
+### Time blocking
+
+`cfg/boox_go_103.timeblock.yaml` switches the daily page to a time-blocking
+layout, after Cal Newport's Time-Block Planner. Chain it last:
+
+```bash
+docker run --rm -v "$PWD:/out" \
+  -e PLANNER_YEAR=2026 \
+  -e CFG="cfg/base.yaml,cfg/boox_go_103.base.yaml,cfg/template_breadcrumb.yaml,cfg/boox_go_103.breadcrumb.custom.yaml,cfg/boox_go_103.timeblock.yaml" \
+  -e NAME="boox_go_103.timeblock.2026" \
+  planner
+```
+
+The schedule column comes off the day page and moves onto a sheet of its own,
+one per day, so the day page becomes tasks and notes across the full width:
+
+```
+2026 | Q1 | January | Week 1 | Thursday, 1        Fri, 2
+Top priorities ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+□ ───────────────────────────────────────────────────────
+□ ───────────────────────────────────────────────────────
+  ───────────────────────────────────────────────────────
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+TimeBlock                            More notes  All notes
+```
+
+`TimeBlock` in the footer points at that day's sheet: an hour strip down the
+left, then four equal columns of about 3.4cm to block the day out in — one
+column per pass, so a day can be re-blocked as it falls apart without losing
+what was planned before. Solid rule on the hour, dashed on the half hour,
+continuous dashed rules between the columns.
+
+It is drawn in TikZ rather than as a tabular, because those column separators
+run the full height and `\vline` cannot dash.
+
+This is the one page that does **not** run at the planner's shared pitch. It
+has no neighbouring column to stay in step with, and at 5.5mm a 16 hour day
+leaves about 16mm dead at the foot, so the rows are stretched to fill the
+column exactly — `\remainingHeight` divided by twice the hour count, which
+comes out near 6.0mm for a 4 AM to 7 PM day. Change the hour range and the
+rows re-fit themselves; nothing needs re-tuning by hand.
+
+Two knobs, both with defaults, in `cfg/boox_go_103.timeblock.yaml`:
+
+| Key | Default | Meaning |
+| --- | --- | --- |
+| `layout.numbers.timeblockcolumns` | 4 | Blocking columns on the sheet |
+| `layout.lengths.timeblockhourwidth` | 12mm | Width of the hour strip |
+
+The sheet adds 365 pages, taking 2026 to 1340. It is independent of `dotted`,
+so it combines with the lined overlay — chain both.
+
 ### Line spacing
 
 Every writing surface in this preset sits on one 5.5mm pitch: the schedule
 rows, the "Top priorities" lines, the ruled lines in the lined build, the dot
 grid in the dotted build, and the notes index rows. Upstream uses 5mm, which is
-tight on a 10.3" panel.
+tight on a 10.3" panel. The one exception is the time-block sheet, which
+stretches its rows to fill the page — see above.
 
 It takes two keys, because they feed different machinery:
 

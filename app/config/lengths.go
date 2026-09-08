@@ -7,6 +7,7 @@ type Lengths struct {
 	LineHeightButLine       string
 	DailyTodoLineHeight     string
 	DotGridPitch            string
+	TimeBlockHourWidth      string
 	TwoColSep               string
 	TriColSep               string
 	FiveColSep              string

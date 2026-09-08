@@ -15,6 +15,7 @@
 \newcommand{\myNumDailyTodos}{ {{- $numbers.DailyTodos -}} }
 \newcommand{\myNumDailyNotes}{ {{- $numbers.DailyNotes -}} }
 \newcommand{\myNumMonthlyNotes}{ {{- if $numbers.MonthlyNotes -}} {{- $numbers.MonthlyNotes -}} {{- else -}} 20 {{- end -}} }
+\newcommand{\myNumTimeBlockColumns}{ {{- if $numbers.TimeBlockColumns -}} {{- $numbers.TimeBlockColumns -}} {{- else -}} 4 {{- end -}} }
 \newcommand{\myNumDailyBottomHour}{ {{- $numbers.DailyBottomHour -}} }
 \newcommand{\myNumDailyTopHour}{ {{- $numbers.DailyTopHour -}} }
 \newcommand{\myNumDailyDiaryGoals}{ {{- $numbers.DailyDiaryGoals -}} }
@@ -30,6 +31,8 @@
 \newlength{\myLenLineHeightButLine}
 \newlength{\myLenDailyTodoLineHeight}
 \newlength{\myLenDotGridPitch}
+\newlength{\myLenTimeBlockHourWidth}
+\newlength{\myLenTimeBlockAvail}
 \newlength{\myLenTwoColSep}
 \newlength{\myLenTwoCol}
 \newlength{\myLenTriColSep}
@@ -87,6 +90,8 @@
 \newcommand{\myTodoLineThick}{\myMinLineHeight{\myLenDailyTodoLineHeight}$\square$\myLineThick}
 
 \setlength{\myLenDotGridPitch}{ {{- if $lengths.DotGridPitch -}} {{- $lengths.DotGridPitch -}} {{- else -}} 5mm {{- end -}} }
+% Width of the hour strip down the left of the time-block page.
+\setlength{\myLenTimeBlockHourWidth}{ {{- if $lengths.TimeBlockHourWidth -}} {{- $lengths.TimeBlockHourWidth -}} {{- else -}} 12mm {{- end -}} }
 % Dot spacing. multido needs a literal dimension, so it is substituted rather
 % than read from a length register. Keep it in step with lineheightbutline.
 \newcommand{\myDotGrid}[2]{\leavevmode\multido{\dC=0mm+{{ if $lengths.DotGridPitch }}{{ $lengths.DotGridPitch }}{{ else }}5mm{{ end }}}{#1}{\multido{\dR=0mm+{{ if $lengths.DotGridPitch }}{{ $lengths.DotGridPitch }}{{ else }}5mm{{ end }}}{#2}{\put(\dR,\dC){\circle*{0.1}}}}}

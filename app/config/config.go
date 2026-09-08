@@ -25,6 +25,11 @@ type Config struct {
 	// lines on the weekly page instead of one each.
 	CombineWeekend bool
 
+	// TimeBlock swaps the daily page to a time-blocking layout: the schedule
+	// column moves off it onto a page of its own, reached by the TimeBlock
+	// link, leaving the day page as tasks and notes across the full width.
+	TimeBlock bool
+
 	Pages Pages
 
 	Layout Layout
@@ -85,6 +90,7 @@ type Numbers struct {
 	WeeklyTodos         int
 	WeeklyNotes         int
 	WeeklyDayLines      int
+	TimeBlockColumns    int
 	DailyPersonal       int
 	DailyBottomHour     int
 	DailyTopHour        int

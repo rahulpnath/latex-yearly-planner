@@ -143,6 +143,7 @@ var ComposerMap = map[string]Composer{
 	"daily":           compose.Daily,
 	"daily_reflect":   compose.DailyReflect,
 	"daily_notes":     compose.DailyNotes,
+	"daily_timeblock": compose.DailyTimeBlock,
 	"notes_indexed":   compose.NotesIndexed,
 }
 

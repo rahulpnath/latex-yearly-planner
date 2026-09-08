@@ -1,0 +1,108 @@
+# Time-block overlay. Chain it last, after
+# cfg/boox_go_103.breadcrumb.custom.yaml:
+#
+#   CFG="cfg/base.yaml,cfg/boox_go_103.base.yaml,cfg/template_breadcrumb.yaml,\
+#        cfg/boox_go_103.breadcrumb.custom.yaml,cfg/boox_go_103.timeblock.yaml"
+#
+# Two things happen. `timeblock: true` takes the schedule column off the daily
+# page, leaving tasks and notes across the full width with a TimeBlock link
+# added to the footer. And the page list gains daily_timeblock, the sheet that
+# link points at: an hour strip and four columns to block the day out in, one
+# column per pass.
+#
+# The page list has to be repeated in full because `pages` is a list, and a
+# config that defines it replaces the previous one outright rather than
+# merging into it.
+
+timeblock: true
+
+layout:
+  numbers:
+    # Blocking columns on the time-block sheet. Four across a 14.7cm page
+    # leaves about 3.4cm each, which is enough to write a task in.
+    timeblockcolumns: 4
+
+  lengths:
+    # Just wide enough for "12 PM" at \small.
+    timeblockhourwidth: 12mm
+
+pages:
+  - name: title
+    renderblocks:
+      - funcname: title
+        tpls:
+          - title.tpl
+
+  - name: annual
+    renderblocks:
+      - funcname: annual
+        tpls:
+          - breadcrumb_01_annual.tpl
+
+  - name: quarterly
+    renderblocks:
+      - funcname: quarterly
+        tpls:
+          - boox_go_103_02_quarterly.tpl
+
+  # breadcrumb_07_daily_notes.tpl is nothing but a header and a full page of
+  # writing surface, so the month, quarter and week notes pages all reuse it.
+  - name: quarterly_notes
+    renderblocks:
+      - funcname: quarterly_notes
+        tpls:
+          - breadcrumb_07_daily_notes.tpl
+
+  - name: monthly
+    renderblocks:
+      - funcname: monthly
+        tpls:
+          - boox_go_103_03_monthly.tpl
+
+  - name: monthly_notes
+    renderblocks:
+      - funcname: monthly_notes
+        tpls:
+          - breadcrumb_07_daily_notes.tpl
+
+  - name: weekly
+    renderblocks:
+      - funcname: weekly
+        tpls:
+          - boox_go_103_04_weekly.tpl
+
+  - name: weekly_notes
+    renderblocks:
+      - funcname: weekly_notes
+        tpls:
+          - breadcrumb_07_daily_notes.tpl
+
+  # Uses a local copy of the daily template with the "Reflect" link dropped,
+  # since the daily_reflect pages are not part of this build.
+  - name: daily
+    renderblocks:
+      - funcname: daily
+        tpls:
+          - boox_go_103_05_daily.tpl
+
+  # One time-block sheet per day, reached by the TimeBlock link on the day
+  # page. Uses the same per-day composer as the notes pages, so it gets the
+  # same breadcrumb, hypertarget and prev/next wiring for free.
+  - name: daily_timeblock
+    renderblocks:
+      - funcname: daily_timeblock
+        tpls:
+          - boox_go_103_10_timeblock.tpl
+
+  - name: daily_notes
+    renderblocks:
+      - funcname: daily_notes
+        tpls:
+          - breadcrumb_07_daily_notes.tpl
+
+  - name: notes_indexed
+    renderblocks:
+      - funcname: notes_indexed
+        tpls:
+          - breadcrumb_08_notes_index.tpl
+          - breadcrumb_09_notes.tpl
