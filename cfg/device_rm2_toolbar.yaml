@@ -1,0 +1,14 @@
+cleartoprightcorner: true
+
+layout:
+  paper:
+    width: 15.6cm
+    height: 20.9cm
+
+    margin:
+      left: 1.4cm
+      right: .3cm
+
+  numbers:
+    dotwidthfull: 26
+    dotwidthtwothirds: 17
